@@ -56,6 +56,7 @@ function AutoComplete() {
   }
   function onSelectRemove() {
     setSearch("");
+    setSelectedIndex(-1);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
