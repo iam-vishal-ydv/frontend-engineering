@@ -77,7 +77,9 @@ function AutoComplete() {
         break;
 
       case "Escape":
-        setShowResult(false);
+        setSearch("");
+        setSelectedIndex(-1);
+        setShowResult(true);
         break;
 
       default:
@@ -94,7 +96,10 @@ function AutoComplete() {
           search={search}
           setSearch={setSearch}
           onSelectRemove={onSelectRemove}
-          onFocus={() => setShowResult(true)}
+          onFocus={() => {
+            setShowResult(true);
+            setSelectedIndex(-1);
+          }}
           onBlur={() => setShowResult(false)}
           placeholder="Search..."
           onKeyDown={handleKeyDown}
