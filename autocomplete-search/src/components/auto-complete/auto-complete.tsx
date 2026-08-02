@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "./input";
 import "./auto-complete.style.css";
 import Listing from "./listing";
@@ -20,6 +20,7 @@ function AutoComplete() {
   const [showResult, setShowResult] = useState<boolean>(false);
   const [cacheSearch, setCacheSearch] = useState<Record<string, Recipe[]>>({});
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   async function fetchProduct() {
     if (cacheSearch[search]) {
@@ -43,6 +44,13 @@ function AutoComplete() {
     let timerId = setTimeout(fetchProduct, 300);
     return () => clearTimeout(timerId);
   }, [search]);
+
+  useEffect(() => {
+    itemRefs.current[selectedIndex]?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }, [selectedIndex]);
   function onSelect(name: string) {
     setSearch(name);
   }

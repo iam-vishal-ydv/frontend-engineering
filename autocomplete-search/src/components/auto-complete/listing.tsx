@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 type Recipe = {
   id: number;
   name: string;
@@ -11,12 +13,23 @@ type ListingProps = {
 };
 
 function Listing({ data, onSelect, selectedIndex }: ListingProps) {
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    itemRefs.current[selectedIndex]?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }, [selectedIndex]);
   return (
     <>
       {data?.length ? (
         data.map((item, index) => (
           <div
             key={item.id}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
             className={`listing-item ${selectedIndex === index ? "active" : ""}`}
             onMouseDown={() => onSelect(item.name)}
           >
